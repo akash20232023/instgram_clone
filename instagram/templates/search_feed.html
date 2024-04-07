@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <style>
+        /* CSS styles for better presentation */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .user-card {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .user-card h3 {
+            margin: 5px 0;
+            cursor: pointer; /* Add cursor pointer for clickable effect */
+            color: blue; /* Change color to indicate it's a link */
+            text-decoration: underline; /* Add underline to indicate it's a link */
+        }
+        .user-card h3:hover {
+            color: darkblue; /* Change color on hover */
+        }
+        .user-card p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .follow-button {
+            background-color: #3897f0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .follow-button:hover {
+            background-color: #2a77c2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User List</h2>
+        <form action="{% url 'search_feed' %}" method="GET">
+            <input type="text" name="username" placeholder="Search by username...">
+            <button type="submit">Search</button>
+        </form>
+        <hr>
+        {% if user_list %}
+            {% for user in user_list %}
+                <div class="user-card">
+                    <!-- Make username clickable -->
+                    <h3><a href="{% url 'user_profile' user_id=user.id %}">{{ user.username }}</a></h3>
+                    <p>{{ user.full_name }}</p>
+                    {% if user.id != request.user.id %}
+                        {% if user.is_following %}
+                            <button class="follow-button" disabled>Following</button>
+                        {% else %}
+                            <button class="follow-button" onclick="followUser({{ user.id }})">Follow</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No users found.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function followUser(userId) {
+            fetch('/follow_api/' + userId)
+            .then(response => {
+                if (response.ok) {
+                    // Reload the page after successful follow
+                    window.location.reload();
+                } else {
+                    console.error('Failed to follow user');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

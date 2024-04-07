@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            color: #262626;
+            margin-bottom: 10px;
+        }
+
+        .input-field, .file-input, .submit-btn {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .file-input {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: #3897f0;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Post</h1>
+        {% if msg %}
+            <p>{{ msg }}</p>
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="caption">Caption:</label><br>
+            <input type="text" id="caption" name="caption" class="input-field"><br>
+            <label for="post_images">Post Images:</label><br>
+            <input type="file" id="post_images" name="post_images" class="file-input"><br>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

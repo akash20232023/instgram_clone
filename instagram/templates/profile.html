@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+        }
+        .profile {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            border: 5px solid #fff; /* Add a white border around the avatar */
+        }
+        .profile h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-align: center; /* Center the heading */
+        }
+        .profile p {
+            font-size: 14px;
+            color: #262626;
+            margin-bottom: 10px;
+        }
+        .profile h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            border-left: 2px solid #262626;
+            margin-top: 30px; /* Add some space between sections */
+        }
+        .post {
+            margin-bottom: 30px;
+        }
+        .post img {
+            max-width: 100%;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 10px; /* Add some space between images and caption */
+        }
+        .followers, .followings {
+            list-style: none;
+            padding: 0;
+            margin-left: 20px; /* Indent the lists */
+        }
+        .followers li, .followings li {
+            font-size: 14px;
+            color: #262626;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        .followers li::before,
+        .followings li::before {
+            content: "";
+            position: absolute;
+            left: -15px; /* Adjust the position of the bullet points */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #262626;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <div class="avatar">
+            <img src="{{ avatar }}" alt="Avatar">
+        </div>
+        <h1>{{ first_name }} {{ last_name }}</h1>
+        <p>{{ bio }}</p>
+        <p>Gender: {{ gender }}</p>
+
+        <h2>Posts</h2>
+        {% for post in posts %}
+        <div class="post">
+            {% for img in post.post_images %}
+            <img src="{{ img.image.url }}" alt="Post Image">
+            {% endfor %}
+            <p>{{ post.caption }}</p>
+        </div>
+        {% endfor %}
+
+        <h2>Followers</h2>
+        <ul class="followers">
+            {% for follower in followers %}
+            <li>{{ follower.name }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Followings</h2>
+        <ul class="followings">
+            {% for following in followings %}
+            <li>{{ following.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
