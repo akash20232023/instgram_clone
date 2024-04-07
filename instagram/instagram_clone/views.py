@@ -102,9 +102,9 @@ def home_page(request):
     posts = Follow.objects.filter(profile=user)
     post_list = []
     if posts:
-        followed_profile = posts.followed.all()
+        followed_profile = posts[0].following.all()
         if followed_profile:
-            posts = Post.objects.filter(admin__in=followed_profile, soft_delete=False)
+            posts = Post.objects.filter(profile__in=followed_profile, soft_delete=False)
             if posts:
                 for post in posts:
                     admin = post.admin
@@ -212,16 +212,16 @@ def my_profile(request):
     follower_list = []
 
     if follow_list:
-        followers = follow_list.follower.all()
-        followings = follow_list.following.all()
+        followers = follow_list[0].follower.all()
+        followings = follow_list[0].following.all()
         
         follower_list = [
-                {'id': like.id, 
+                {'id': follower.id, 
                 'name': str(follower.first_name + follower.last_name) if follower.first_name and follower.last_name else None
                 } for follower in followers] if followers else []
 
         following_list = [
-                {'id': like.id, 
+                {'id': following.id, 
                 'name': str(following.first_name + following.last_name) if following.first_name and following.last_name else None
                 } for following in followings] if followings else []
 
